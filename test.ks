@@ -1,6 +1,4 @@
 #version=RHEL8
-# Use graphical install
-graphical
 
 repo --name="AppStream" --baseurl=file:///run/install/sources/mount-0000-cdrom/AppStream
 repo --name="custom" --baseurl=file:///run/install/sources/mount-0000-cdrom/custom_rpm

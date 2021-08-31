@@ -1,4 +1,5 @@
 #version=RHEL8
+text
 
 repo --name="AppStream" --baseurl=file:///run/install/sources/mount-0000-cdrom/AppStream
 repo --name="custom" --baseurl=file:///run/install/sources/mount-0000-cdrom/custom_rpm
@@ -28,17 +29,17 @@ cdrom
 firstboot --enable
 
 ignoredisk --only-use=sda,sdb
-# Partition clearing information
-clearpart --none --initlabel
+clearpart --initlabel --drives=sda,sdb
+
 # Disk partitioning information
-part raid.11 --fstype="mdmember" --ondisk=sdb --size=601
-part raid.12 --fstype="mdmember" --ondisk=sda --size=601
+part raid.11 --fstype="mdmember" --ondisk=sda --size=601
+part raid.12 --fstype="mdmember" --ondisk=sdb --size=601
 
 part raid.21 --fstype="mdmember" --ondisk=sda --size=1025
 part raid.22 --fstype="mdmember" --ondisk=sdb --size=1025
 
-part raid.31 --fstype="mdmember" --ondisk=sdb --size=50000
-part raid.32 --fstype="mdmember" --ondisk=sda --size=50000
+part raid.31 --fstype="mdmember" --ondisk=sda --size=50000
+part raid.32 --fstype="mdmember" --ondisk=sdb --size=50000
 
 raid /boot/efi --device=boot_efi --fstype="efi" --level=RAID1 --fsoptions="umask=0077,shortname=winnt" raid.11 raid.12
 raid /boot --device=boot --fstype="xfs" --level=RAID1 raid.21 raid.22

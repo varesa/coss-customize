@@ -2,7 +2,7 @@
 set -euo pipefail
 
 IMGFILE="CentOS-Stream-8-x86_64-latest-dvd1.iso"
-DUDFILE="dd-megaraid_sas-07.714.04.00-3.el8_4.elrepo.iso"
+#DUDFILE="dd-megaraid_sas-07.714.04.00-3.el8_4.elrepo.iso"
 
 if ! [[ "$#" -eq "2" ]]; then
     echo "Usage: $0 <kickstart> <output file>"
@@ -22,7 +22,7 @@ test -d cache || mkdir cache
 
 pushd cache
 test -f "$IMGFILE" || wget "http://ftp.funet.fi/pub/mirrors/centos.org/8-stream/isos/x86_64/$IMGFILE"
-test -f "$DUDFILE" || wget "https://elrepo.org/linux/dud/el8/x86_64/$DUDFILE"
+#test -f "$DUDFILE" || wget "https://elrepo.org/linux/dud/el8/x86_64/$DUDFILE"
 
 sudo mount -o loop "$IMGFILE" "$MOUNTPOINT"
 echo "Mounted image at $MOUNTPOINT"

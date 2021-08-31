@@ -31,10 +31,9 @@ shopt -s dotglob
 echo "Building at $BUILDDIR"
 cp -aRf "$MOUNTPOINT"/* "$BUILDDIR"
 
-echo "Inserting DUD"
-chmod +w "$BUILDDIR/images/pxeboot/initrd.img"
-echo "./$DUDFILE" | cpio -H newc -o | gzip >> "$BUILDDIR/images/pxeboot/initrd.img"
-#cp "$DUDFILE" "$BUILDDIR/"
+#echo "Inserting DUD"
+#chmod +w "$BUILDDIR/images/pxeboot/initrd.img"
+#echo "./$DUDFILE" | cpio -H newc -o | gzip >> "$BUILDDIR/images/pxeboot/initrd.img"
 
 popd
 
@@ -45,7 +44,7 @@ echo "Creating bootloader entry"
 chmod +w "$BUILDDIR/EFI/BOOT/grub.cfg"
 echo "
 menuentry 'Install CentOS Stream 8-stream (custom kickstart)' --class fedora --class gnu-linux --class gnu --class os {
-	linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL=CentOS-Stream-8-x86_64-dvd inst.ks=cdrom:/ks.cfg inst.dd=/$DUDFILE
+	linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL=CentOS-Stream-8-x86_64-dvd inst.ks=cdrom:/ks.cfg
 	initrdefi /images/pxeboot/initrd.img
 }
 " >> "$BUILDDIR/EFI/BOOT/grub.cfg"

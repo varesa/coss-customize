@@ -1,5 +1,6 @@
 #version=RHEL8
 text
+reboot
 
 repo --name="AppStream" --baseurl=file:///run/install/sources/mount-0000-cdrom/AppStream
 repo --name="custom" --baseurl=file:///run/install/sources/mount-0000-cdrom/custom_rpm
@@ -11,6 +12,9 @@ kexec-tools
 # Extras:
 frr
 nmstate
+tar
+tcpdump
+puppet7-release
 
 %end
 
@@ -64,3 +68,6 @@ pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
 pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 %end
 
+%post
+dnf install -y puppet-agent
+%end

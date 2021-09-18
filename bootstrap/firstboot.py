@@ -36,7 +36,7 @@ def get_next_stage():
             try:
                 r = requests.get(f'http://{peer_ip}:50005/provision')
                 if r.status_code == 200:
-                    return r.text
+                    return r.text, peer_ip
             except Exception:
                 pass
 
@@ -45,7 +45,7 @@ def get_next_stage():
 
 
 start_devices()
-script = get_next_stage()
+script, peer_ip = get_next_stage()
 
 S2_PATH = '/root/network_stage2'
 
@@ -53,4 +53,4 @@ with open(S2_PATH, 'w') as f:
     f.write(script)
 
 os.chmod(S2_PATH, 0o700)
-print(check_output(S2_PATH).decode())
+print(check_output([S2_PATH, peer_ip]).decode())

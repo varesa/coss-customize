@@ -1,4 +1,4 @@
-#!/usr/libexec/platform-python
+#!/usr/bin/env python3
 
 import ipaddress
 import json
@@ -54,3 +54,5 @@ with open(S2_PATH, 'w') as f:
 
 os.chmod(S2_PATH, 0o700)
 print(check_output([S2_PATH, peer_ip]).decode())
+
+os.remove('/etc/do-run-firstboot')

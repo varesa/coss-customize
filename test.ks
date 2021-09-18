@@ -16,6 +16,10 @@ tar
 tcpdump
 puppet7-release
 
+# For firstboot.py
+python3
+python3-requests
+
 %end
 
 # Keyboard layouts
@@ -76,4 +80,5 @@ dnf install -y puppet-agent
 cp /run/install/sources/mount-0000-cdrom/bootstrap/firstboot.py /mnt/sysimage/usr/local/sbin/firstboot.py
 cp /run/install/sources/mount-0000-cdrom/bootstrap/firstboot.service /mnt/sysimage/etc/systemd/system/firstboot.service
 ln -s /etc/systemd/system/firstboot.service /mnt/sysimage/etc/systemd/system/multi-user.target.wants/firstboot.service
+touch /mnt/sysimage/etc/do-run-firstboot
 %end

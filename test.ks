@@ -72,10 +72,6 @@ pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
 pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 %end
 
-%post
-dnf install -y puppet-agent
-%end
-
 %post --nochroot --log=/mnt/sysimage/root/ks-post2.log
 cp /run/install/sources/mount-0000-cdrom/bootstrap/firstboot.py /mnt/sysimage/usr/local/sbin/firstboot.py
 cp /run/install/sources/mount-0000-cdrom/bootstrap/firstboot.service /mnt/sysimage/etc/systemd/system/firstboot.service

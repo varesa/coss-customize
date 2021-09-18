@@ -56,6 +56,9 @@ pushd "$BUILDDIR/custom_rpm/"
 createrepo .
 popd
 
+echo "Copying bootstrap files"
+cp -r bootstrap "$BUILDDIR/"
+
 echo "Building ISO"
 pushd "$BUILDDIR"
 chmod +w isolinux/isolinux.bin

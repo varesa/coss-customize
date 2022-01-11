@@ -5,13 +5,15 @@ reboot
 repo --name="AppStream" --baseurl=file:///run/install/sources/mount-0000-cdrom/AppStream
 repo --name="custom" --baseurl=file:///run/install/sources/mount-0000-cdrom/custom_rpm
 
+driverdisk /dd-megaraid_sas-07.717.02.00-1.el8_5.elrepo.iso
+
 %packages
 @^minimal-environment
 kexec-tools
 
 # Extras:
-frr
-nmstate
+#frr
+#nmstate
 tar
 tcpdump
 puppet7-release
@@ -72,9 +74,9 @@ pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
 pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 %end
 
-%post --nochroot --log=/mnt/sysimage/root/ks-post2.log
-cp /run/install/sources/mount-0000-cdrom/bootstrap/firstboot.py /mnt/sysimage/usr/local/sbin/firstboot.py
-cp /run/install/sources/mount-0000-cdrom/bootstrap/firstboot.service /mnt/sysimage/etc/systemd/system/firstboot.service
-ln -s /etc/systemd/system/firstboot.service /mnt/sysimage/etc/systemd/system/multi-user.target.wants/firstboot.service
-touch /mnt/sysimage/etc/do-run-firstboot
-%end
+#%post --nochroot --log=/mnt/sysimage/root/ks-post2.log
+#cp /run/install/sources/mount-0000-cdrom/bootstrap/firstboot.py /mnt/sysimage/usr/local/sbin/firstboot.py
+#cp /run/install/sources/mount-0000-cdrom/bootstrap/firstboot.service /mnt/sysimage/etc/systemd/system/firstboot.service
+#ln -s /etc/systemd/system/firstboot.service /mnt/sysimage/etc/systemd/system/multi-user.target.wants/firstboot.service
+#touch /mnt/sysimage/etc/do-run-firstboot
+#%end

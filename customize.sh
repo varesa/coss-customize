@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-IMGFILE="CentOS-Stream-8-x86_64-latest-dvd1.iso"
-#DUDFILE="dd-megaraid_sas-07.714.04.00-3.el8_4.elrepo.iso"
+IMGFILE="Rocky-8.5-x86_64-dvd1.iso"
+DUDFILE="dd-megaraid_sas-07.717.02.00-1.el8_5.elrepo.iso"
 
 if ! [[ "$#" -eq "2" ]]; then
     echo "Usage: $0 <kickstart> <output file>"
@@ -21,8 +21,8 @@ BUILDDIR="$(mktemp -d)"
 test -d cache || mkdir cache
 
 pushd cache
-test -f "$IMGFILE" || wget "http://ftp.funet.fi/pub/mirrors/centos.org/8-stream/isos/x86_64/$IMGFILE"
-#test -f "$DUDFILE" || wget "https://elrepo.org/linux/dud/el8/x86_64/$DUDFILE"
+test -f "$IMGFILE" || wget "https://download.rockylinux.org/pub/rocky/8/isos/x86_64/$IMGFILE"
+test -f "$DUDFILE" || wget "https://elrepo.org/linux/dud/el8/x86_64/$DUDFILE"
 
 sudo mount -o loop "$IMGFILE" "$MOUNTPOINT"
 echo "Mounted image at $MOUNTPOINT"
@@ -31,9 +31,9 @@ shopt -s dotglob
 echo "Building at $BUILDDIR"
 cp -aRf "$MOUNTPOINT"/* "$BUILDDIR"
 
-#echo "Inserting DUD"
-#chmod +w "$BUILDDIR/images/pxeboot/initrd.img"
-#echo "./$DUDFILE" | cpio -H newc -o | gzip >> "$BUILDDIR/images/pxeboot/initrd.img"
+echo "Inserting DUD"
+chmod +w "$BUILDDIR/images/pxeboot/initrd.img"
+echo "./$DUDFILE" | cpio -H newc -o | gzip >> "$BUILDDIR/images/pxeboot/initrd.img"
 
 popd
 
@@ -43,8 +43,8 @@ cp "$KICKSTART" "$BUILDDIR/ks.cfg"
 echo "Creating bootloader entry"
 chmod +w "$BUILDDIR/EFI/BOOT/grub.cfg"
 echo "
-menuentry 'Install CentOS Stream 8-stream (custom kickstart)' --class fedora --class gnu-linux --class gnu --class os {
-	linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL=CentOS-Stream-8-x86_64-dvd inst.ks=cdrom:/ks.cfg
+menuentry 'Install Rocky 8.5 (custom kickstart)' --class fedora --class gnu-linux --class gnu --class os {
+	linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL=Rocky-8-5-x86_64-dvd inst.ks=cdrom:/ks.cfg
 	initrdefi /images/pxeboot/initrd.img
 }
 " >> "$BUILDDIR/EFI/BOOT/grub.cfg"
@@ -65,7 +65,8 @@ chmod +w isolinux/isolinux.bin
 genisoimage -o "$OUTFILE" -b isolinux/isolinux.bin -J -R -l -c isolinux/boot.cat \
     -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot \
     -e images/efiboot.img -no-emul-boot -graft-points \
-    -V "CentOS-Stream-8-x86_64-dvd" .
+    -joliet-long \
+    -V "Rocky-8-5-x86_64-dvd" .
 isohybrid --uefi "$OUTFILE"
 
 chmod -R +w "$BUILDDIR"
